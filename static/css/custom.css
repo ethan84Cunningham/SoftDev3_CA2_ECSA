@@ -15,7 +15,7 @@ body {
 
 /****Footer****/
 .my_footer {
-        background-color: #f8f9fa;
+        background-color: #ff0000;
         height: 60px;
         }
 .my_footer p {
@@ -28,7 +28,7 @@ body {
     padding-top: 15px;
     }
     .my_row_class .mx-auto p {
-    color: #000;
+    color: #ff0000;
     font-size: 12px;
     }
     .my_row_class .mx-auto p a {

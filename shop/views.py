@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Category,Film
 from django.views.generic import ListView, DetailView
+from django.core.paginator import Paginator, EmptyPage, InvalidPage
 
 class FilmCat(ListView):
     model = Film
@@ -14,7 +15,17 @@ class FilmCat(ListView):
         else:
             films = Film.objects.all().filter(available=True)
 
-        return render(request,"shop/category.html",{'category':category, 'products':films})
+        paginator = Paginator(films, 6)
+        try: 
+            page = int(request.GET.get('page','1'))
+        except:
+            page = 1
+        try:
+            films = paginator.page(page)
+        except(EmptyPage,InvalidPage):
+            films = paginator.page(paginator.num_pages)
+
+        return render(request,"shop/category.html",{'category':category, 'films':films})
 
 class FilmDetail(DetailView):
     model = Film
