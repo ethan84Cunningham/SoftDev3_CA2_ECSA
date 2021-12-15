@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+{% block metadescription %}
+	{% if category %}
+		{{ category.description|truncatewords:155 }}
+	{% else %}
+		Welcome to the film store where you can buy and Watch movies.
+	{% endif %}
+{% endblock %}
+{% block title %}
+	{% if category %}
+		{{ category.name }} - Perfect Film Store
+	{% else %}
+		See Our Film Collection - Perfect Film Store
+	{% endif %}
+{% endblock %}
+{% block content %}
+	<!--Breadcrumb navigation-->
+	{% if category %}
+		<div class="row my_row_class">
+			<div class="mx-auto">
+				<p><a href="{% url 'shop:allFilmCat' %}">Our Film Collection</a> | {{category.name}}</p>
+			</div>
+        </div>
+    {% endif %}
+	<div class="mx-auto">
+		{% if category %}
+			<img class= "my_image" src="{{category.image.url}}" alt="{{category.name}}">
+		</div>
+		<br>
+		<div>
+			<h1 class="text-center my_title">{{category.name}}</h1>
+			<p class="text-justify">{{category.description}}</p>
+		</div>
+    {% else %}
+		<img class="my_image my_image_padding" src="{% static 'images/banner.jpg' %}" alt="Our Films Collection">
+	</div>
+	<br>
+	<div>
+		<h1 class="text-center my_title" >Our Films Collection</h1>
+		<p class="text-justify">Looking for a movie, look no further then our site for whatever film you desire. immerse yourself in a Space Adventure, Help fight crime and become a superhero.</p>
+	</div>
+    {% endif %}
+    <div class="container">
+		<div class="row mx-auto">
+			{% for film in films %}
+				<div class = "my_bottom_margin col-9 col-lg-4 col-sm-12 col-md-4">
+					<div class="card text-center" style="min-width: 20rem;">
+						<a href="{{film.get_absolute_url}}"><img class="card-img-top my_image" src="{{film.image.url}}" alt="{{film.name}}"></a>
+						<div class="card-body">
+							<h4>{{film.name}}</h4>
+							<p>€{{film.price}}</p>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+
+		<div class="mx-auto">
+			{% if films.paginator.num_pages > 1 %}
+				<hr>
+				<div class="text-center">
+					{% for pg in films.paginator.page_range %}
+						<a href="?page={{pg}}" class="btn btn-light btn-sm {% if films.number == pg %}active{% endif %}">{{pg}}</a>
+					{% endfor %}
+				</div>
+			{% endif %}
+		</div>
+		<br>
+	</div>
+{% endblock %}
+
